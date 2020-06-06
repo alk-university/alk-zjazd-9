@@ -1,15 +1,7 @@
 import { css } from '@emotion/native';
 import React, { useState } from 'react';
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import GestureRecognizer, {
-  swipeDirections,
-} from 'react-native-swipe-gestures';
+import { Image, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 const Gallery = () => {
   const pictures = [
@@ -19,8 +11,6 @@ const Gallery = () => {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [backgroundColor, setBackgroundColor] = useState('pink');
-  const [myText, setMyText] = useState('..............');
 
   const getThumbStyle = (index) => {
     let output = css`
@@ -36,63 +26,39 @@ const Gallery = () => {
     return output;
   };
 
-  const onSwipeUp = (gestureState) => {
-    setMyText('You swiped up!');
-  };
-
-  const onSwipeDown = (gestureState) => {
-    setMyText('You swiped down!');
-  };
-
   const onSwipeLeft = (gestureState) => {
-    setMyText('You swiped left!');
-  };
-
-  const onSwipeRight = (gestureState) => {
-    setMyText('You swiped right!');
-  };
-
-  const onSwipe = (gestureName, gestureState) => {
-    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    switch (gestureName) {
-      case SWIPE_UP:
-        setBackgroundColor('red');
-        break;
-      case SWIPE_DOWN:
-        setBackgroundColor('green');
-        break;
-      case SWIPE_LEFT:
-        setBackgroundColor('blue');
-        break;
-      case SWIPE_RIGHT:
-        setBackgroundColor('yellow');
-        break;
+    // next
+    if (currentIndex === pictures.length - 1) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(currentIndex + 1);
     }
   };
 
-  const config = {
-    velocityThreshold: 0.3,
-    directionalOffsetThreshold: 80,
+  const onSwipeRight = (gestureState) => {
+    // prev
+    if (currentIndex === 0) {
+      setCurrentIndex(pictures.length - 1);
+    } else {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   return (
     <SafeAreaView
       style={css`
         flex: 1;
-        background-color: #ccc;
+        background-color: transparent;
         align-items: center;
         justify-content: center;
       `}
     >
       <GestureRecognizer
-        onSwipe={(direction, state) => onSwipe(direction, state)}
-        onSwipeUp={onSwipeUp}
-        onSwipeDown={onSwipeDown}
         onSwipeLeft={onSwipeLeft}
         onSwipeRight={onSwipeRight}
-        config={config}
-        style={{
-          backgroundColor,
+        config={{
+          velocityThreshold: 0.3,
+          directionalOffsetThreshold: 80,
         }}
       >
         <View
@@ -123,8 +89,6 @@ const Gallery = () => {
               </TouchableOpacity>
             );
           })}
-
-          <Text>{myText}</Text>
         </View>
       </GestureRecognizer>
     </SafeAreaView>

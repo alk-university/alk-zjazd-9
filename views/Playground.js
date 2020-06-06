@@ -34,12 +34,15 @@ const Playground = () => {
     <SafeAreaView
       style={css`
         flex: 1;
-        background-color: #ccc;
-        align-items: center;
-        /* justify-content: center; */
+        background-color: transparent;
+        padding: 30px;
       `}
     >
-      <ScrollView>
+      <ScrollView
+        style={css`
+          padding: 30px;
+        `}
+      >
         <Text style={textStyle}>
           Open up App.js to start working on your app!
         </Text>

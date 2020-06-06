@@ -1,6 +1,7 @@
 import { css } from '@emotion/native';
 import React, { useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
+import { COLOR_PALETTE } from './../AppStyl';
 
 const Weather = () => {
   const [loc, setLoc] = useState('Berlin');
@@ -24,12 +25,22 @@ const Weather = () => {
         padding: 30px;
       `}
     >
-      <Text>Lokalizacja:</Text>
+      <Text
+        style={css`
+          color: ${COLOR_PALETTE.pastel_green};
+          font-size: 32px;
+          text-align: center;
+          margin-top: 100px;
+        `}
+      >
+        Lokalizacja:
+      </Text>
       <TextInput
         style={css`
-          border: 1px solid #ccc;
+          border: 1px solid ${COLOR_PALETTE.pastel_green};
           margin: 20px 0;
           padding: 10px;
+          color: ${COLOR_PALETTE.pastel_green};
         `}
         value={loc}
         onChangeText={setLoc}
@@ -37,7 +48,18 @@ const Weather = () => {
 
       <Button onPress={handleSearch} title="Sprawdź pogodę" />
 
-      {data && <Text>Temperatura: {getCelsius(data.main?.temp)} °C</Text>}
+      {data && (
+        <Text
+          style={css`
+            color: ${COLOR_PALETTE.pastel_green};
+            font-size: 20px;
+            text-align: center;
+            margin-top: 100px;
+          `}
+        >
+          Temperatura: {getCelsius(data.main?.temp)} °C
+        </Text>
+      )}
     </View>
   );
 };
