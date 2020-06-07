@@ -1,17 +1,26 @@
 import { css } from '@emotion/native';
-import React, { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { COLOR_PALETTE } from './../AppStyl';
 
 const Weather = () => {
-  const [loc, setLoc] = useState('Berlin');
+  const [loc, setLoc] = useState('');
   const [data, setData] = useState(null);
 
-  const handleSearch = () => {
+  useEffect(() => {
+    AsyncStorage.getItem('location').then((location) => {
+      if (location) {
+        setLoc(location);
+        handleSearch(location);
+      }
+    });
+  }, []);
+
+  const handleSearch = (location) => {
+    AsyncStorage.setItem('location', location);
+
     fetch(
-      'https://api.openweathermap.org/data/2.5/weather?q=' +
-        loc +
-        '&appid=2a1a2f39b94b6bb68a2abb96353ac8b2'
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=2a1a2f39b94b6bb68a2abb96353ac8b2`
     )
       .then((r) => r.json())
       .then(setData);
@@ -46,7 +55,7 @@ const Weather = () => {
         onChangeText={setLoc}
       />
 
-      <Button onPress={handleSearch} title="Sprawdź pogodę" />
+      <Button onPress={() => handleSearch(loc)} title="Sprawdź pogodę" />
 
       {data && (
         <Text
